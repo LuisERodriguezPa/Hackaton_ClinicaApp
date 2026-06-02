@@ -14,7 +14,7 @@ public class ClinicaService implements Consultable {
     private List<Medico> medicos = new ArrayList<>();
     private List<Turno> turnos = new ArrayList<>();
 
-    //Leysi
+    // metodo que registra paciente
     public void registrarPaciente (Paciente p) {
         if (!p.esValido()) {
             System.out.println("Los datos indicados no son válidos");
@@ -143,8 +143,13 @@ public class ClinicaService implements Consultable {
             System.out.println("⚠ Ya existe un médico con ese nombre y apellido.");
             return;
         }
-        int nuevoId = medicos.isEmpty() ? 1
-                : medicos.stream().mapToInt(Medico::getId).max().getAsInt() + 1;
+        int maxId = 0;
+        for (Medico medico : medicos) {
+            if (medico.getId() > maxId) {
+                maxId = medico.getId();
+            }
+        }
+        int nuevoId = maxId + 1;
         m.setId(nuevoId);
         medicos.add(m);
         System.out.println("✔ Médico registrado: " + m);
@@ -153,7 +158,8 @@ public class ClinicaService implements Consultable {
     public Medico buscarPorNombreApellido(String nombre, String apellido) {
         for (Medico m : medicos) {
             if (m.getNombre().equalsIgnoreCase(nombre)
-                    && m.getApellido().equalsIgnoreCase(apellido)) return m;
+                    && m.getApellido().equalsIgnoreCase(apellido))
+                return m;
         }
         return null;
     }
@@ -171,35 +177,40 @@ public class ClinicaService implements Consultable {
     }
 
     @Override
-    public List listarTurnosDelDia(LocalDate fecha){
-        List <Turno> turnos = new ArrayList<>();
+    public List<Turno> listarTurnosDelDia(LocalDate fecha){
+        List <Turno> turnosDelDia = new ArrayList<>();
         for(Turno turno:turnos){
-            if(turno.getFechaHora().toLocalDate()== fecha){
-                turnos.add(turno);
+
+            if(turno.getFechaHora().toLocalDate().equals(fecha)){
+                turnosDelDia.add(turno);
             }
         }
-        return turnos;
+        return turnosDelDia;
     }
 
     @Override
-    public List buscarPorMedico(Medico medico){
-        List<Turno> turnos = new ArrayList<>();
+    public List<Turno> buscarPorMedico(Medico medico){
+        List<Turno> turnosMedico = new ArrayList<>();
+
         for(Turno turno:turnos){
             if(turno.getMedico().equals(medico)){
-                turnos.add(turno);
+                turnosMedico.add(turno);
             }
         }
-        return turnos;
+        return turnosMedico;
     }
 
     @Override
-    public List buscarPorPaciente(Paciente paciente){
-        List<Turno> turnos = new ArrayList<>();
+    // Usamos un arrayList porque no queremos un tamaño fijo sino dinamico y segundo queremos los datos ordenados
+    // que como entre asi se guarden.
+    public List<Turno> buscarPorPaciente(Paciente paciente){
+        List<Turno> turnosDelPaciente = new ArrayList<>();
         for(Turno turno:turnos){
             if(turno.getPaciente().equals(paciente)){
-                turnos.add(turno);
+                turnosDelPaciente.add(turno);
             }
         }
-        return turnos;
+        return turnosDelPaciente;
     }
+
 }

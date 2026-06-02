@@ -98,22 +98,19 @@ public class Main {
 
                     LocalDateTime fechaHora = LocalDateTime.of(anio, mes, dia, hora, minuto);
 
+
                     Turno turno = new Turno(paciente, medico, fechaHora);
                     clinica.asignarTurno(turno);
                     System.out.println("Turno asignado");
                     break;
                 case 4:
-                    String fechaString;
-                    LocalDate fecha;
-                    System.out.println("***Listar todos los turnos****");
-                    System.out.println("Por favor Ingrese la fecha con este formato (yyyy-mm-dd):");
+                    System.out.println("***  Listar todos los turnos  ****");
+                    System.out.print("Por favor Ingrese la fecha con este formato (yyyy-mm-dd):");
                     entrada.nextLine();
-                    fechaString = entrada.nextLine();
-                    LocalDate fecha2 = LocalDate.parse(fechaString);
-                    clinica.listarTurnosDelDia(fecha2);
-                    /*for(Object turnoT:clinica.listarTurnosDelDia(fecha)){
-                        System.out.println(turnoT);
-                    }*/
+                    String fechaTexto = entrada.nextLine();
+                    LocalDate fechaCitas = LocalDate.parse(fechaTexto);
+                    System.out.println(clinica.listarTurnosDelDia(fechaCitas));
+
                     break;
                 case 5:
                     System.out.println("***Cancelar Turno****");
@@ -127,20 +124,15 @@ public class Main {
                     String nombreMedico3 = entrada.next();
                     System.out.print("Ingrese el apellido del médico: ");
                     String apellidoMedico3 = entrada.next();
-                    System.out.println(clinica.buscarPorMedico(medicoDePrueba));
+                    Medico medico2 = clinica.buscarPorNombreApellido(nombreMedico3,apellidoMedico3);
+                    System.out.println(clinica.buscarPorMedico(medico2));
                     break;
                 case 7:
                     System.out.println("Buscar todas las citas del paciente");
                     System.out.print("Ingrese la cédula del paciente: ");
                     String cedula2 = entrada.next();
-                    System.out.print("Ingrese el nombre del paciente: ");
-                    String nombre2 = entrada.next();
-                    System.out.print("Ingrese el apellido del paciente: ");
-                    String apellido2 = entrada.next();
-                    System.out.print("Ingrese el Teléfono del paciente: ");
-                    String telefono2 = entrada.next();
-                    Paciente nuevoPaciente2 = new Paciente(cedula2, nombre2, apellido2, telefono2);
-                    clinica.buscarPorPaciente(nuevoPaciente2);
+                    Paciente nuevoPaciente2 = clinica.buscarPorCedula(cedula2);
+                    System.out.println(clinica.buscarPorPaciente(nuevoPaciente2));;
                     break;
                 case 8:
                     System.out.println("***Cambiar estado de turno***");
@@ -148,9 +140,6 @@ public class Main {
                     String nuevoEstado;
                     System.out.println("Ingrese el id del turno:");
                     idTurno = entrada.nextInt();
-                    /*System.out.println("Ingrese el nuevo estado: ");
-                    nuevoEstado = entrada.nextLine();
-                    EstadoTurno estado = EstadoTurno.valueOf(nuevoEstado.trim().toUpperCase());*/
                     clinica.cambiarEstadoTurno(idTurno,EstadoTurno.ATENDIDO);
 
                     break;

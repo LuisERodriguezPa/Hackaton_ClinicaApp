@@ -3,8 +3,6 @@ package co.generation.clinica.model;
 import java.time.LocalDateTime;
 
 public class Turno {
-    Paciente paciente1 = new Paciente("1051434","Luis","Rodriguez","3259876543");
-    Medico medico1 = new Medico("Juan","Perez",Especialidad.PEDIATRIA);
         private int id;
         private Paciente paciente;
         private Medico medico;
@@ -28,6 +26,7 @@ public class Turno {
             setFechaHora(fechaHora);
             setEstado(estado);
         }
+
 
         // Getters
 
